@@ -1,0 +1,34 @@
+import random
+def randInt():
+    print(int(random.random()*100))
+randInt()
+
+import random
+def randInt2():
+    print(int(random.random()*50))
+ randInt2()
+
+
+import random
+def randInt3():
+    values = list(range(50,100))
+    print(int(random.random(values))
+randInt3()
+
+
+import random
+def randInt4():
+    values = list(range(50,500))
+    print(random.choice(values))
+randInt4()
+
+import random
+def function():
+    print(round(random.random()*10+5))
+function()
+
+
+import random
+def randInt(max,min):
+    print(round(random.random()*max+min))
+randInt(50,50)
