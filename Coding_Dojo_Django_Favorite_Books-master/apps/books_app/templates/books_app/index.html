@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous"/>
+
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <title>Books</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+        <h5><a href="/destroy/">Log Out</a></h5>
+        <hr>
+
+        <div class="col-xl-4">
+
+            <h3>Add a Favorite Book</h3>
+            <form action="/books/create/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input class="form-control" type="text" name="title">
+                </div>
+            
+                <div class="form-group">
+                    <label for="desc">Description</label>
+                    <textarea class="form-control" name="desc" cols="30" rows="10"></textarea>
+                </div>
+
+                
+                <input type="submit" value="Add">
+
+            </form>
+
+            {% if messages %}
+            <ul class="messages my-3">    
+                {% for message in messages %}    
+                {% if message.tags == "error" %}<li class="{{ message.tags }}">{{ message }}</li>{% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+
+        </div>
+
+
+        <div class="col-xl-7">
+            <h2 class="mt-4">All Books</h2>
+            {% for book in allBooks %}
+                <h4><a href="/books/{{ book.id }}">{{ book.title }}</a></h4>
+                <h5>(added by {{ book.uploader.first_name }} {{ book.uploader.last_name }})</h5>
+                {% if book in user.books_liked.all %}
+                    <p>This is one of your favorite books!</p>
+                {% else %}
+                    <p><a href="/books/favorite/{{ book.id }}">Add to Favorites</a></p>
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</body>
+</html>

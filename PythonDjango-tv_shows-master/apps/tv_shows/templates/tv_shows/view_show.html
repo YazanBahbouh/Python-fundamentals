@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Read (One)</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <style>
+            div{
+                margin: 50px;
+                display: inline-block;
+            }
+            #back{
+                display: inline-block;
+                vertical-align: top;
+                margin: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h2>This Show {{ thisShow.id }}</h2>
+            <p>Title: {{ thisShow.title }}</p>
+            <p>Network: {{ thisShow.network }}</p>
+            <p>Release Date: {{ thisShow.release_date|date:"m/d/Y" }}</p>
+            <p>Description: {{ thisShow.desc }}</p>
+            <p>Last Updated: {{ thisShow.updated_at|date:"F d, Y g:i A" }}</p>
+            <a href="/shows/{{ thisShow.id }}/edit">Edit</a> | <a href="/shows/{{ thisShow.id }}/destroy">Delete</a>
+        </div>
+        <a id="back" href="/shows">Go Back</a>
+    </body>
+</html>

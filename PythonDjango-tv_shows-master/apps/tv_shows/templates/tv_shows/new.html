@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <style>
+            form{
+                margin: 50px;
+                display: inline-block;
+            }
+            a{
+                display: inline-block;
+                vertical-align: top;
+                margin: 20px;
+            }
+            p{
+                margin-bottom: 0;
+            }
+            textarea{
+                height: 100px;
+                width: 300px;
+                resize: none;
+            }
+            input{
+                margin-bottom: 20px;
+            }
+            .messages{
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action='/shows/create' method='post'>
+            {% csrf_token %}
+            <h2>Add a New Show</h2>
+            <p>Title</p>
+            <input type="text" name="title">
+            <p>Network</p>
+            <input type="text" name="network">
+            <p>Release Date</p>
+            <input type="date" name="release_date">
+            <p>Description</p>
+            <textarea name="desc"></textarea><br>
+            <input type="submit" value="Create">
+        </form>
+        <a href="/shows">Go Back</a>
+    </body>
+</html>

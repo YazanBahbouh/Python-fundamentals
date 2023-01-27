@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous"/>
+
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <title>Book</title>
+</head>
+<body>
+<div class="container">
+
+    <h1>Welcome {{ thisUser.first_name }} {{ thisUser.last_name }}</h1>
+    <hr>
+
+    <div class="col-xl-6">
+        <h1 class="display-4 bg-light text-dark">{{ book.title }}</h1>
+
+        <h5>Added by: {{ book.uploader.first_name }} {{ book.uploader.last_name }}</h5>
+        <h5>Added on: {{ book.created_at }}</h5>
+        <h5>Last updated on: {{ book.updated_at }}</h5>
+
+        {% if book.uploader.id == request.session.cur_user %}
+        <form action="/books/desc/update/{{ book.id}}" method="POST">
+            {% csrf_token %}
+            <p>Description: </p>
+                <input type="hidden" name="title" value="{{ book.title }}">
+                <textarea name="desc" cols="30" rows="10">{{ book.desc }}</textarea>
+                <input type="submit" value="Update" class="btn btn-secondary">
+                <a href="/books/delete/{{ book.id }}" class="btn btn-danger">Delete Book!</a>
+        </form>
+        {% else %}
+        <p>Description: {{ book.desc }}</p>
+        {% endif %}
+
+        {% if messages %}
+        <ul class="messages my-3">    
+            {% for message in messages %}    
+            {% if message.tags == "error" %}<li class="{{ message.tags }}">{{ message }}</li>{% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+
+
+    <div class="col-xl-4">
+        <h2>Users Who Like This Book:</h2>
+
+        <ul>
+            {% for user in book.users_who_like.all %}
+                <li>{{ user.first_name }} {{ user.last_name }} 
+                    {% if user.id == request.session.cur_user %}
+                        <p><a href="/books/unfavorite/{{ book.id }}/">Unfavorite</a></p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% if not thisUser in book.users_who_like.all %}
+            <p><a href="/books/favorite/{{ book.id }}/">Add to Favorites</a></p>
+        {% endif %}
+
+
+    </div>
+
+    <a href="/books/" class="btn btn-lg btn-success">Back to Books!</a>
+
+</div>
+
+
+</body>
+</html>
